@@ -8,7 +8,6 @@ import lombok.Setter;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.util.Date;
-import java.util.List;
 
 @Entity
 @Getter
@@ -39,22 +38,12 @@ public class DepositEntity {
 
     private int depositRefundAccountId;
 
-    @OneToOne
-    private RequestEntity request;
-
     @ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
     private CustomerEntity customer;
 
     @ManyToOne
     @JoinColumn(name = "deposit_account_id", referencedColumnName = "id")
-    private BankAccountEntity bankAccount;
+    private AccountEntity bankAccount;
 
-    @ManyToOne
-    @JoinColumn(name = "deposit_type_id", referencedColumnName = "id")
-    private DepositTypeEntity depositType;
-
-    @ManyToOne
-    @JoinColumn(name = "type_percent_payment_id", referencedColumnName = "id")
-    private TypePercentPaymentEntity typePercentPayment;
 }

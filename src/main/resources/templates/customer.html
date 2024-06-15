@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Информация о пользователе</title>
+</head>
+<body>
+<h1>Добро пожаловать, <span th:text="${customer.getName}">Имя пользователя</span>!</h1>
+
+<div>
+  <h2>Ваши действия:</h2>
+  <ul>
+    <li><a th:href="@{/account/{accountId}(accountId=${customer.getBankAccount.getId})}" th:text="'Счета ' + ${customer.getName}">Счета</a></li>
+    <li><a th:href="@{/customers/{customerId}/deposits(customerId=${customer.getId()})}" th:text="'Вклады ' + ${customer.getName}">Вклады</a></li>
+  </ul>
+</div>
+</body>
+</html>

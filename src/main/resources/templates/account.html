@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Счет пользователя</title>
+    <style>
+        /* Скрываем формы по умолчанию */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<h1>Счёт</h1>
+<ul>
+    <li>
+        <a th:href="@{/account/{id}(id=${account.getId})}" th:text="${account.getId}">Номер счета</a> - Баланс: <span th:text="${account.getBalance}">Баланс</span>
+    </li>
+</ul>
+
+<!-- Вывод сообщения об ошибке -->
+<div th:if="${errorMessage}" style="color: red;">
+    <p th:text="${errorMessage}"></p>
+</div>
+
+<!-- Кнопки для пополнения и снятия средств -->
+<button onclick="toggleForm('depositForm', 'withdrawForm')">Пополнить</button>
+<button onclick="toggleForm('withdrawForm', 'depositForm')">Снять</button>
+
+<!-- Форма для пополнения средств -->
+<form id="depositForm" th:action="@{/account/{id}/deposit(id=${account.getId})}" method="post" class="hidden">
+    <label for="depositAmount">Сумма для пополнения:</label>
+    <input type="number" id="depositAmount" name="amount" step="0.01" min="0">
+    <button type="submit">Пополнить</button>
+</form>
+
+<!-- Форма для снятия средств -->
+<form id="withdrawForm" th:action="@{/account/{id}/withdraw(id=${account.getId})}" method="post" class="hidden">
+    <label for="withdrawAmount">Сумма для снятия:</label>
+    <input type="number" id="withdrawAmount" name="amount" step="0.01" min="0">
+    <button type="submit">Снять</button>
+</form>
+
+<button onclick="goBack()">Назад</button>
+
+<script>
+    function toggleForm(showFormId, hideFormId) {
+        var showForm = document.getElementById(showFormId);
+        var hideForm = document.getElementById(hideFormId);
+
+        if (showForm.classList.contains('hidden')) {
+            showForm.classList.remove('hidden');
+        }
+
+        if (!hideForm.classList.contains('hidden')) {
+            hideForm.classList.add('hidden');
+        }
+    }
+
+    function goBack() {
+        window.history.back();
+    }
+</script>
+</body>
+</html>

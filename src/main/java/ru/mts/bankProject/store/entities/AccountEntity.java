@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -13,15 +14,21 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "deposits_types")
-public class DepositTypeEntity {
+@Table(name = "bank_accounts")
+public class AccountEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String depositTypeName;
+    private BigDecimal numBankAccount;
 
-    @OneToMany(mappedBy = "depositType")
+    private BigDecimal balance;
+
+    @OneToOne(mappedBy = "bankAccount")
+    private CustomerEntity customer;
+
+    @OneToMany(mappedBy = "bankAccount")
     private List<DepositEntity> deposits;
 
 }

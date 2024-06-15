@@ -17,19 +17,19 @@ import java.util.List;
 public class CustomerEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String phoneNumber;
-
-    private String password;
+    private String name;
 
     @OneToOne
     @JoinColumn(name = "bank_account_id",  referencedColumnName = "id")
-    private BankAccountEntity bankAccount;
-
-    @OneToMany(mappedBy = "customer")
-    private List<RequestEntity> requests;
+    private AccountEntity bankAccount;
 
     @OneToMany(mappedBy = "customer")
     private List<DepositEntity> deposits;
+
+    public String hello(){
+        return "hello";
+    }
 }
