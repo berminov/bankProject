@@ -1,25 +1,31 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Вклады клиента</title>
+    <meta charset="UTF-8">
+    <title>Вклады клиента</title>
 </head>
 <body>
 <h1>Вклады</h1>
 
 <div th:if="${deposits.size() == 0}">
-  <p>У вас нет вкладов.</p>
-  <a th:href="@{/account/openDeposit}">Открыть вклад</a>
+    <p>У вас нет вкладов.</p>
+    <a th:href="@{/account/openDeposit}">Открыть вклад</a>
 </div>
 
 <div th:if="${deposits.size() > 0}">
-  <ul>
-    <li th:each="deposit : ${deposits}">
-      <a th:href="@{/deposit/{id}(id=${deposit.getId})}" th:text="${deposit.getDepositNumber}">Номер вклада</a> - Сумма: <span th:text="${deposit.getAmount}">Сумма</span>
-    </li>
-  </ul>
+    <ul>
+        <li th:each="deposit : ${deposits}">
+            <a th:href="@{/deposit/{id}(id=${deposit.getId})}" th:text="${deposit.getId}">Номер вклада</a> - Сумма:
+            <span th:text="${deposit.getDepositAmount}">Сумма</span>
+        </li>
+    </ul>
 </div>
 
+<div>
+    <a th:href="@{/customers/{customerId}/deposits/open}">Открыть вклад</a>
+</div>
+
+<br>
 <!-- Кнопка "Назад" -->
 <button onclick="goBack()">Назад</button>
 
@@ -27,6 +33,8 @@
         function goBack() {
             window.history.back();
         }
-    </script>
+
+
+</script>
 </body>
 </html>

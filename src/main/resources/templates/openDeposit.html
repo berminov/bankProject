@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>Подбор условий вклада</title>
+</head>
+<body>
+<h1>Подбор условий вклада</h1>
+
+<form action="/calculateDeposit" method="post">
+  <fieldset>
+    <legend>Вид вклада</legend>
+    <input type="radio" id="withRefillAndWithdrawal" name="depositType" value="withRefillAndWithdrawal">
+    <label for="withRefillAndWithdrawal">С пополнением и снятием</label><br>
+
+    <input type="radio" id="withRefillNoWithdrawal" name="depositType" value="withRefillNoWithdrawal">
+    <label for="withRefillNoWithdrawal">С пополнением, но без снятия</label><br>
+
+    <input type="radio" id="noRefillNoWithdrawal" name="depositType" value="noRefillNoWithdrawal">
+    <label for="noRefillNoWithdrawal">Без пополнения и без снятия</label><br>
+  </fieldset>
+
+  <fieldset>
+    <legend>Срок вклада</legend>
+    <select name="depositTerm">
+      <option value="3">3 месяца</option>
+      <option value="6">6 месяцев</option>
+      <option value="12">1 год</option>
+    </select>
+  </fieldset>
+
+  <fieldset>
+    <legend>Сумма вклада</legend>
+    <label for="depositAmount">Введите сумму (мин. 10,000.00 руб.)</label><br>
+    <input type="number" id="depositAmount" name="depositAmount" min="10000" step="0.01" required>
+  </fieldset>
+
+  <fieldset>
+    <legend>Выплата процентов</legend>
+    <input type="radio" id="monthlyInterest" name="interestPaymentType" value="monthlyInterest">
+    <label for="monthlyInterest">Ежемесячно</label><br>
+
+    <input type="radio" id="endOfTermInterest" name="interestPaymentType" value="endOfTermInterest">
+    <label for="endOfTermInterest">В конце срока</label><br>
+
+    <input type="radio" id="capitalization" name="interestPaymentType" value="capitalization">
+    <label for="capitalization">Капитализация</label><br>
+  </fieldset>
+
+  <fieldset>
+    <legend>Сумма накопления в конце срока</legend>
+    <output id="accumulatedAmount"></output>
+  </fieldset>
+
+  <fieldset>
+    <legend>Сумма дохода от вклада</legend>
+    <output id="incomeAmount"></output>
+  </fieldset>
+
+  <button type="submit">Рассчитать вклад</button>
+</form>
+</body>
+</html>
