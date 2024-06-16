@@ -8,13 +8,15 @@
         .hidden {
             display: none;
         }
+
     </style>
 </head>
 <body>
 <h1>Счёт</h1>
 <ul>
     <li>
-        <a th:href="@{/account/{id}(id=${account.getId})}" th:text="${account.getId}">Номер счета</a> - Баланс: <span th:text="${account.getBalance}">Баланс</span>
+        <a th:href="@{/account/{id}(id=${account.getId})}" th:text="${account.getId}">Номер счета</a> - Баланс: <span
+            th:text="${account.getBalance}">Баланс</span>
     </li>
 </ul>
 
@@ -60,6 +62,7 @@
     function goBack() {
         window.history.back();
     }
+
 </script>
 </body>
 </html>

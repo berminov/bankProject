@@ -9,20 +9,20 @@
 
 <div th:if="${deposits.size() == 0}">
     <p>У вас нет вкладов.</p>
-    <a th:href="@{/account/openDeposit}">Открыть вклад</a>
+    <a th:href="@{/customers/{customerId}/deposits/open(customerId=${customerId})}">Открыть вклад</a>
 </div>
 
 <div th:if="${deposits.size() > 0}">
     <ul>
         <li th:each="deposit : ${deposits}">
             <a th:href="@{/deposit/{id}(id=${deposit.getId})}" th:text="${deposit.getId}">Номер вклада</a> - Сумма:
-            <span th:text="${deposit.getDepositAmount}">Сумма</span>
+            <span th:text="${deposit.getAmount}">Сумма</span>
         </li>
     </ul>
 </div>
 
 <div>
-    <a th:href="@{/customers/{customerId}/deposits/open}">Открыть вклад</a>
+    <a th:href="@{/customers/{customerId}/deposits/open(customerId=${customerId})}">Открыть вклад</a>
 </div>
 
 <br>

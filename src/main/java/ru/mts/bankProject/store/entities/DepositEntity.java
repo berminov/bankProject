@@ -7,7 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 @Getter
@@ -18,25 +18,26 @@ import java.util.Date;
 public class DepositEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private boolean depositRefill;
+//    private boolean canRefill;
+//
+//    private boolean canWithdraw;
 
-    private BigDecimal depositAmount;
+    private BigDecimal amount;
 
-    private Date startDate;
+    private LocalDate startDate;
 
-    private Date endDate;
+    private LocalDate endDate;
 
-    private BigDecimal depositRate;
+//    private BigDecimal depositRate;
 
-    private int percentPaymentAccountId;
-
-    private Date percentPaymentDate;
-
-    private boolean capitalization;
-
-    private int depositRefundAccountId;
+//    private boolean capitalization;
+//
+//    private boolean percentPerMonth;
+//
+//    private boolean percentOneTime;
 
     @ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
