@@ -15,7 +15,7 @@
 <div th:if="${deposits.size() > 0}">
     <ul>
         <li th:each="deposit : ${deposits}">
-            <a th:href="@{/deposit/{id}(id=${deposit.getId})}" th:text="${deposit.getId}">Номер вклада</a> - Сумма:
+            <a th:href="@{deposits/{id}(id = ${deposit.getId})}" th:text="${deposit.getId}">Номер вклада</a> - Сумма:
             <span th:text="${deposit.getAmount}">Сумма</span>
         </li>
     </ul>

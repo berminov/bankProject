@@ -2,10 +2,7 @@ package ru.mts.bankProject.controllers;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import ru.mts.bankProject.services.DepositService;
 import ru.mts.bankProject.store.entities.DepositEntity;
 
@@ -13,6 +10,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
+@RequestMapping("/customers/{customerId}/deposits")
 public class DepositController {
 
     private final DepositService depositService;
@@ -21,7 +19,7 @@ public class DepositController {
         this.depositService = depositService;
     }
 
-    @GetMapping("/customers/{customerId}/deposits")
+    @GetMapping
     public String customerDeposits(@PathVariable int customerId, Model model) {
         List<DepositEntity> deposits = depositService.getCustomerDeposits(customerId);
         System.out.println(deposits);
@@ -30,38 +28,28 @@ public class DepositController {
         return "depositsList";
     }
 
-    @GetMapping("/customers/{customerId}/deposits/open")
+    @GetMapping("/{depositId}")
+    public String showDepositInfo(@PathVariable("depositId") int id, Model model) {
+        DepositEntity deposit = depositService.getDepositById(id);
+        model.addAttribute("deposit", deposit);
+        return "depositInfo";
+    }
+
+    @GetMapping("/open")
     public String showOpenDepositForm(@PathVariable int customerId, Model model) {
         model.addAttribute("customerId", customerId);
         return "openDeposit";
     }
 
-    @PostMapping("/customers/{customerId}/deposits/open")
+    @PostMapping("/open")
     public String createDeposit(
             @PathVariable int customerId,
-            @RequestParam String depositType,
+            @RequestParam int depositTypeId,
             @RequestParam int period,
             @RequestParam BigDecimal amount,
-            @RequestParam String interestPaymentType,
-//            @RequestParam boolean percentPerMonth,
-//            @RequestParam boolean percentOneTime,
-//            @RequestParam boolean capitalization,
+            @RequestParam int interestPaymentTypeId,
             Model model
     ) {
-
-        boolean canRefill = false;
-        boolean canWithdraw = false;
-        switch (depositType){
-            case "refillAndWithdrawal":
-                canRefill = true;
-                canWithdraw = true;
-                break;
-            case "onlyRefill":
-                canRefill = true;
-                break;
-            default:
-                break;
-        }
 
         if (!depositService.checkBalance(customerId, amount)) {
             model.addAttribute("error", "Недостаточно средств на счете для создания вклада.");
@@ -70,7 +58,7 @@ public class DepositController {
 
         BigDecimal depositRate = BigDecimal.valueOf(10.00);
 
-        depositService.createDeposit(customerId,  amount, depositType, period, interestPaymentType );
+        depositService.createDeposit(customerId, amount, depositTypeId, period, interestPaymentTypeId);
 
         return "redirect:/customers/" + customerId + "/deposits";
     }

@@ -13,20 +13,15 @@ import java.util.List;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "customers")
-public class CustomerEntity {
+@Table(name = "deposit_types")
+public class DepositTypeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private String name;
+    private String depositTypeName;
 
-    @OneToOne
-    @JoinColumn(name = "bank_account_id",  referencedColumnName = "id")
-    private AccountEntity bankAccount;
-
-    @OneToMany(mappedBy = "customer")
+    @OneToMany(mappedBy = "depositType")
     private List<DepositEntity> deposits;
-
 }

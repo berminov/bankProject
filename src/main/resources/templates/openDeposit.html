@@ -10,13 +10,13 @@
 <form th:action="@{/customers/{customerId}/deposits/open(customerId=${customerId})}" method="post">
     <fieldset>
         <legend>Вид вклада</legend>
-        <input type="radio" id="withRefillAndWithdrawal" name="depositType" value="withRefillAndWithdrawal" required>
+        <input type="radio" id="withRefillAndWithdrawal" name="depositTypeId" value="1" required>
         <label for="withRefillAndWithdrawal">С пополнением и снятием</label><br>
 
-        <input type="radio" id="withRefillNoWithdrawal" name="depositType" value="withRefillNoWithdrawal" required>
+        <input type="radio" id="withRefillNoWithdrawal" name="depositTypeId" value="2" required>
         <label for="withRefillNoWithdrawal">С пополнением, но без снятия</label><br>
 
-        <input type="radio" id="noRefillNoWithdrawal" name="depositType" value="noRefillNoWithdrawal" required>
+        <input type="radio" id="noRefillNoWithdrawal" name="depositTypeId" value="3" required>
         <label for="noRefillNoWithdrawal">Без пополнения и без снятия</label><br>
     </fieldset>
 
@@ -37,13 +37,13 @@
 
     <fieldset>
         <legend>Выплата процентов</legend>
-        <input type="radio" id="monthlyInterest" name="interestPaymentType" value="percentPerMonth" required>
+        <input type="radio" id="monthlyInterest" name="interestPaymentTypeId" value="1" required>
         <label for="monthlyInterest">Ежемесячно</label><br>
 
-        <input type="radio" id="endOfTermInterest" name="interestPaymentType" value="percentOneTime" required>
+        <input type="radio" id="endOfTermInterest" name="interestPaymentTypeId" value="2" required>
         <label for="endOfTermInterest">В конце срока</label><br>
 
-        <input type="radio" id="capitalization" name="interestPaymentType" value="capitalization" required>
+        <input type="radio" id="capitalization" name="interestPaymentTypeId" value="3" required>
         <label for="capitalization">Капитализация</label><br>
     </fieldset>
 

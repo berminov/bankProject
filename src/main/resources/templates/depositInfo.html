@@ -1,12 +1,17 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Информация о вкладе</title>
+    <meta charset="UTF-8">
+    <title>Информация о вкладе</title>
 </head>
 <body>
 <h1>Информация о вкладе</h1>
-<p>Номер вклада: <span th:text="${deposit.depositNumber}">Номер вклада</span></p>
-<p>Сумма: <span th:text="${deposit.amount}">Сумма</span></p>
+    <p>Номер вклада: <span th:text="${deposit.id}">Номер вклада</span></p>
+    <p>Сумма: <span th:text="${deposit.amount} + ' ₽'">Сумма</span></p>
+<p>Процентная ставка: <span th:text="${deposit.depositRate} + ' %'">Процентная ставка</span></p>
+<p>Тип вклада: <span th:text="${deposit.depositType.depositTypeName}">Тип вклада</span></p>
+<p>Тип выплаты процентов: <span th:text="${deposit.interestPaymentType.interestPaymentTypeName}">Тип выплаты процентов</span></p>
+<p>Дата начала: <span th:text="${deposit.startDate}">Дата начала</span></p>
+<p>Дата окончания: <span th:text="${deposit.endDate}">Дата окончания</span></p>
 </body>
 </html>

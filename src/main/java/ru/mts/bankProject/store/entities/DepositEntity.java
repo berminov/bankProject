@@ -21,23 +21,21 @@ public class DepositEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-//    private boolean canRefill;
-//
-//    private boolean canWithdraw;
-
     private BigDecimal amount;
 
     private LocalDate startDate;
 
     private LocalDate endDate;
 
-//    private BigDecimal depositRate;
+    private BigDecimal depositRate;
 
-//    private boolean capitalization;
-//
-//    private boolean percentPerMonth;
-//
-//    private boolean percentOneTime;
+    @ManyToOne
+    @JoinColumn(name = "deposit_type_id", referencedColumnName = "id")
+    private DepositTypeEntity depositType;
+
+    @ManyToOne
+    @JoinColumn(name = "interest_payment_type_id", referencedColumnName = "id")
+    private InterestPaymentTypeEntity interestPaymentType;
 
     @ManyToOne
     @JoinColumn(name = "customer_id", referencedColumnName = "id")
