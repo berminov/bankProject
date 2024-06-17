@@ -56,8 +56,6 @@ public class DepositController {
             return "openDeposit";
         }
 
-        BigDecimal depositRate = BigDecimal.valueOf(10.00);
-
         depositService.createDeposit(customerId, amount, depositTypeId, period, interestPaymentTypeId);
 
         return "redirect:/customers/" + customerId + "/deposits";

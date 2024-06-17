@@ -29,6 +29,12 @@ public class DepositEntity {
 
     private BigDecimal depositRate;
 
+    private LocalDate nextPaymentDate;
+
+    private BigDecimal piggyBank;
+
+    private Boolean active;
+
     @ManyToOne
     @JoinColumn(name = "deposit_type_id", referencedColumnName = "id")
     private DepositTypeEntity depositType;

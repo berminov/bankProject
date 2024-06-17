@@ -1,5 +1,6 @@
 package ru.mts.bankProject.services;
 
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mts.bankProject.store.entities.AccountEntity;
@@ -7,6 +8,7 @@ import ru.mts.bankProject.store.entities.DepositEntity;
 import ru.mts.bankProject.store.repos.*;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -53,17 +55,48 @@ public class DepositService {
         deposit.setAmount(amount);
         deposit.setStartDate(LocalDate.now());
         deposit.setEndDate(deposit.getStartDate().plusMonths(period));
-
         deposit.setDepositType(depositTypeRepository.findById(depositTypeId)
                 .orElseThrow(() -> new NoSuchElementException("Deposit type with id " + depositTypeId + " not found")));
         deposit.setInterestPaymentType(interestPaymentTypeRepository.findById(interestPaymentTypeId)
                 .orElseThrow(() -> new NoSuchElementException("Interest payment type with id " + interestPaymentTypeId + " not found")));
 
-
+        deposit.setNextPaymentDate(LocalDate.now().plusMonths(1));
+        deposit.setPiggyBank(BigDecimal.valueOf(0));
         deposit.setDepositRate(calculateDepositRate(amount, depositTypeId, period, interestPaymentTypeId));
         account.setBalance(account.getBalance().subtract(amount));
 
         depositRepository.save(deposit);
+    }
+
+    @Scheduled(cron = "0 0 0 * * *") // Каждый день в полночь
+    public void calculateInterest() {
+        LocalDate currentDate = LocalDate.now();
+
+        List<DepositEntity> deposits = depositRepository.findByNextPaymentDate(currentDate);
+
+        for (DepositEntity deposit : deposits) {
+
+            switch (deposit.getInterestPaymentType().getId()) {
+                case 1:
+                    deposit.getBankAccount().setBalance(deposit.getBankAccount().getBalance().add(getMonthPayment(deposit)));
+                    break;
+                case 2:
+                    deposit.setPiggyBank(deposit.getPiggyBank().add(getMonthPayment(deposit)));
+                    break;
+                case 3:
+                    deposit.setAmount(deposit.getAmount().add(getMonthPayment(deposit)));
+                    break;
+                //TODO
+            }
+        }
+    }
+
+    private BigDecimal getMonthRate(DepositEntity deposit) {
+        return deposit.getDepositRate().divide(BigDecimal.valueOf(12), 2, RoundingMode.DOWN);
+    }
+
+    private BigDecimal getMonthPayment(DepositEntity deposit) {
+        return deposit.getAmount().multiply(getMonthRate(deposit).divide(BigDecimal.valueOf(100), 2, RoundingMode.DOWN));
     }
 
     private BigDecimal calculateDepositRate(BigDecimal amount, int depositTypeId, int period,
