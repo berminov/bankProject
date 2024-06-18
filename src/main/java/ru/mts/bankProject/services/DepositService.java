@@ -118,6 +118,9 @@ public class DepositService {
         deposit.setActive(false);
         AccountEntity account = deposit.getBankAccount();
         account.setBalance(account.getBalance().add(deposit.getAmount()));
+        if (deposit.getPiggyBank().compareTo(BigDecimal.ZERO)!=0){
+            account.setBalance(account.getBalance().add(deposit.getPiggyBank()));
+        }
         depositRepository.save(deposit);
         accountRepository.save(account);
     }
@@ -141,8 +144,11 @@ public class DepositService {
                 case 3:
                     deposit.setAmount(deposit.getAmount().add(getMonthPayment(deposit)));
                     break;
-                    //TODO Сделать чтобы вклад закрывался при окончании срока
             }
+            if (deposit.getEndDate() == currentDate) {
+                closeDeposit(deposit.getId());
+            } else deposit.setNextPaymentDate(deposit.getNextPaymentDate().plusMonths(1));
+
             depositRepository.save(deposit);
         }
 
