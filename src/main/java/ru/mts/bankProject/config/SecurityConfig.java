@@ -30,7 +30,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .formLogin().loginPage("/auth/login") // Указываем полный путь к странице логина
                 .loginProcessingUrl("/process_login") // URL для обработки логина
                 .defaultSuccessUrl("/customer", true) // Успешный вход: перенаправление на /customer
-                .failureUrl("/auth/login?error");// Ошибка входа: перенаправление на /auth/login с параметром ?error
+                .failureUrl("/auth/login?error")
+                .and()
+                .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/auth/login");
+
+        // Ошибка входа: перенаправление на /auth/login с параметром ?error
     }
 
     @Override

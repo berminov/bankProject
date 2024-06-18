@@ -14,5 +14,9 @@
     <li><a th:href="@{/customer/deposits}" th:text="'Вклады ' + ${customer.getName}">Вклады</a></li>
   </ul>
 </div>
+<br>
+<form th:action="@{/logout}" method="get">
+  <button type="submit">Выйти из аккаунта</button>
+</form>
 </body>
 </html>

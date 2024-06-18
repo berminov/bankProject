@@ -15,7 +15,12 @@
     <input type="password" th:field="*{password}" id="password"/>
     <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}">Попробуйте другой пароль</div>
     <br/>
+    <br>
     <input type="submit" value="Зарегистрироваться!"/>
+</form>
+<br>
+<form th:action="@{/auth/login}" method="get">
+    <button type="submit">У меня есть аккаунт</button>
 </form>
 </body>
 </html>
