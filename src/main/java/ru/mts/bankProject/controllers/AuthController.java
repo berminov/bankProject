@@ -20,17 +20,17 @@ public class AuthController {
 
 
     @GetMapping("/login")
-    public String loginPage(){
+    public String loginPage() {
         return "loginPage";
     }
 
     @GetMapping("/registration")
-    public String registrationPage(@ModelAttribute("customer") CustomerEntity customer){
+    public String registrationPage(@ModelAttribute("customer") CustomerEntity customer) {
         return "registrationPage";
     }
 
     @PostMapping("/registration")
-    public String registrateCustomer(@ModelAttribute("customer") CustomerEntity customer){
+    public String registrateCustomer(@ModelAttribute("customer") CustomerEntity customer) {
         customerService.register(customer);
         return "redirect: /auth/login";
     }

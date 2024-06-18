@@ -5,12 +5,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.mts.bankProject.services.AccountService;
-import ru.mts.bankProject.services.CustomerService;
 import ru.mts.bankProject.store.entities.AccountEntity;
-import ru.mts.bankProject.store.entities.CustomerEntity;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Controller
 @RequestMapping("/customer")
