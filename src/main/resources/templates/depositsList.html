@@ -32,12 +32,12 @@
 </div>
 
 
-<form th:action="@{/customers/{customerId}/deposits/open(customerId=${customerId})}" method="get">
+<form th:action="@{/customer/deposits/open}" method="get">
     <button type="submit">Открыть вклад</button>
 </form>
 <br>
 <!-- Кнопка "Назад" -->
-<form th:action="@{/customer/{customerId}(customerId=${customerId})}" method="get">
+<form th:action="@{/customer}" method="get">
     <button type="submit">Назад</button>
 </form>
 </body>

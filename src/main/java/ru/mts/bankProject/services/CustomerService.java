@@ -16,4 +16,8 @@ public class CustomerService {
     public CustomerEntity getCustomerById(int id){
         return customerRepository.findById(id).orElse(null);
     }
+
+    public CustomerEntity getCustomerByName(String name){
+        return customerRepository.findByName(name).orElse(null);
+    }
 }

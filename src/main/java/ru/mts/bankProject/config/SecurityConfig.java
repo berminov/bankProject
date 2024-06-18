@@ -29,7 +29,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin().loginPage("/auth/login") // Указываем полный путь к странице логина
                 .loginProcessingUrl("/process_login") // URL для обработки логина
-                .defaultSuccessUrl("/customer/1", true) // Успешный вход: перенаправление на /customer
+                .defaultSuccessUrl("/customer", true) // Успешный вход: перенаправление на /customer
                 .failureUrl("/auth/login?error");// Ошибка входа: перенаправление на /auth/login с параметром ?error
 //                .permitAll() // Разрешаем всем доступ к странице логина
 //                .and()

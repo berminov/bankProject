@@ -1,6 +1,8 @@
 package ru.mts.bankProject.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,12 +19,22 @@ public class CustomerController {
         this.customerService = customerService;
     }
 
-    @GetMapping("/customer/{id}")
-    public String userInfo(@PathVariable int id, Model model){
-        CustomerEntity customer = customerService.getCustomerById(id);
-        System.out.println(customer);
+    @GetMapping("/customer")
+    public String userInfo(@AuthenticationPrincipal UserDetails userDetails, Model model) {
+        if (userDetails == null) {
+            throw new RuntimeException("User not authenticated");
+        }
+
+        // Получаем имя пользователя (или другой идентификатор)
+        String username = userDetails.getUsername();
+
+        // Ищем пользователя по имени пользователя
+        CustomerEntity customer = customerService.getCustomerByName(username);
+
+        // Передаем информацию о пользователе в модель
         model.addAttribute("customer", customer);
 
+        // Возвращаем имя представления (view)
         return "customer";
     }
 }

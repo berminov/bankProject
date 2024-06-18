@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 import java.util.List;
 
 @Controller
-@RequestMapping("/customers/{customerId}")
+@RequestMapping("/customer")
 public class AccountController {
 
     private final AccountService accountService;
@@ -33,7 +33,7 @@ public class AccountController {
     public String deposit(@PathVariable int id, @RequestParam BigDecimal amount, RedirectAttributes redirectAttributes) {
         accountService.deposit(id, amount);
         redirectAttributes.addFlashAttribute("message", "Баланс успешно пополнен!");
-        return "redirect:/customers/{customerId}/account/{id}";
+        return "redirect:/customer/account/{id}";
     }
 
     @PostMapping("/account/{id}/withdraw")
@@ -43,7 +43,7 @@ public class AccountController {
         } catch (RuntimeException e) {
             redirectAttributes.addFlashAttribute("errorMessage", e.getMessage());
         }
-        return "redirect:/customers/{customerId}/account/{id}";
+        return "redirect:/customer/account/{id}";
     }
 
 }

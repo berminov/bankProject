@@ -1,9 +1,11 @@
 package ru.mts.bankProject.services;
 
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.mts.bankProject.store.entities.AccountEntity;
+import ru.mts.bankProject.store.entities.CustomerEntity;
 import ru.mts.bankProject.store.entities.DepositEntity;
 import ru.mts.bankProject.store.repos.*;
 
@@ -32,6 +34,19 @@ public class DepositService {
         this.depositTypeRepository = depositTypeRepository;
         this.interestPaymentTypeRepository = interestPaymentTypeRepository;
         this.accountRepository = accountRepository1;
+    }
+
+    public int getCustomerIdByUserDetail(UserDetails userDetails){
+
+        if (userDetails == null) {
+            throw new RuntimeException("User not authenticated");
+        }
+
+        String username = userDetails.getUsername();
+
+        CustomerEntity customer = customerRepository.findByName(username).orElseThrow(() -> new NullPointerException("No data"));
+
+        return customer.getId();
     }
 
     public DepositEntity getDepositById(int id) {

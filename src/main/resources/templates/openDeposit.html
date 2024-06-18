@@ -7,7 +7,7 @@
 <body>
 <h1>Подбор условий вклада</h1>
 
-<form th:action="@{/customers/{customerId}/deposits/open(customerId=${customerId})}" method="post">
+<form th:action="@{/customer/deposits/open}" method="post">
     <fieldset>
         <legend>Вид вклада</legend>
         <input type="radio" id="withRefillAndWithdrawal" name="depositTypeId" value="1" required>
@@ -55,7 +55,7 @@
 </form>
 
 <br>
-<form th:action="@{/customers/{customerId}/deposits(customerId=${customerId})}" method="get">
+<form th:action="@{/customer/deposits}" method="get">
     <button type="submit">Назад</button>
 </form>
 </body>
