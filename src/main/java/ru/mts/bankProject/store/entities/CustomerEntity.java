@@ -22,6 +22,8 @@ public class CustomerEntity {
 
     private String name;
 
+    private String password;
+
     @OneToOne
     @JoinColumn(name = "bank_account_id",  referencedColumnName = "id")
     private AccountEntity bankAccount;

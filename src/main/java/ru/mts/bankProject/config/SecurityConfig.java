@@ -1,0 +1,52 @@
+package ru.mts.bankProject.config;
+
+import org.hibernate.engine.spi.ExceptionConverter;
+import org.springframework.context.annotation.Bean;
+import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import ru.mts.bankProject.services.CustomerDetailsService;
+
+
+@EnableWebSecurity
+public class SecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final CustomerDetailsService customerDetailsService;
+
+    public SecurityConfig(CustomerDetailsService customerDetailsService) {
+        this.customerDetailsService = customerDetailsService;
+    }
+
+    @Override
+    protected void configure(HttpSecurity http) throws Exception {
+        http.csrf().disable()
+                .authorizeRequests()
+                .antMatchers("/auth/login", "/error").permitAll()
+                .anyRequest().authenticated()
+                .and()
+                .formLogin().loginPage("/auth/login") // Указываем полный путь к странице логина
+                .loginProcessingUrl("/process_login") // URL для обработки логина
+                .defaultSuccessUrl("/customer/1", true) // Успешный вход: перенаправление на /customer
+                .failureUrl("/auth/login?error");// Ошибка входа: перенаправление на /auth/login с параметром ?error
+//                .permitAll() // Разрешаем всем доступ к странице логина
+//                .and()
+//                .logout()
+//                .logoutUrl("/logout") // URL для выхода
+//                .logoutSuccessUrl("/auth/login") // После выхода перенаправление на /auth/login
+//                .invalidateHttpSession(true)
+//                .deleteCookies("JSESSIONID");
+    }
+
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(customerDetailsService).passwordEncoder(passwordEncoder());
+    }
+
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return NoOpPasswordEncoder.getInstance();
+    }
+}
