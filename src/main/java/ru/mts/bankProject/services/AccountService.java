@@ -6,7 +6,6 @@ import ru.mts.bankProject.store.entities.AccountEntity;
 import ru.mts.bankProject.store.repos.AccountRepository;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 @Service
 public class AccountService {
@@ -17,8 +16,8 @@ public class AccountService {
         this.accountRepository = accountRepository;
     }
 
-    public AccountEntity getAccountById(int id){
-        return  accountRepository.findById(id).orElse(null);
+    public AccountEntity getAccountById(int id) {
+        return accountRepository.findById(id).orElse(null);
     }
 
     @Transactional
@@ -37,8 +36,9 @@ public class AccountService {
         account.setBalance(account.getBalance().subtract(amount));
         accountRepository.save(account); // Сохранение изменений в базе данных
     }
+
     @Transactional
-    public AccountEntity createNewAccount(){
+    public AccountEntity createNewAccount() {
         AccountEntity account = new AccountEntity();
         account.setBalance(BigDecimal.ZERO);
         accountRepository.save(account);

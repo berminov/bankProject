@@ -25,7 +25,7 @@ public class CustomerEntity {
     private String password;
 
     @OneToOne
-    @JoinColumn(name = "bank_account_id",  referencedColumnName = "id")
+    @JoinColumn(name = "bank_account_id", referencedColumnName = "id")
     private AccountEntity bankAccount;
 
     @OneToMany(mappedBy = "customer")

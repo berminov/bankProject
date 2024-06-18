@@ -24,5 +24,4 @@ public class InterestPaymentTypeEntity {
 
     @OneToMany(mappedBy = "interestPaymentType")
     private List<DepositEntity> deposits;
-
 }

@@ -19,10 +19,9 @@ public class CustomerDetailsService implements UserDetailsService {
         this.customerRepository = customerRepository;
     }
 
-
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        Optional<CustomerEntity> customer = customerRepository.findByName(s) ;
+        Optional<CustomerEntity> customer = customerRepository.findByName(s);
 
         if (customer.isEmpty())
             throw new UsernameNotFoundException("User not found");

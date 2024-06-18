@@ -28,15 +28,15 @@ public class DepositService {
 
     private final AccountRepository accountRepository;
 
-    public DepositService(DepositRepository depositRepository, AccountRepository accountRepository, CustomerRepository customerRepository, AccountService accountService, DepositTypeRepository depositTypeRepository, InterestPaymentTypeRepository interestPaymentTypeRepository, AccountRepository accountRepository1) {
+    public DepositService(DepositRepository depositRepository, AccountRepository accountRepository, CustomerRepository customerRepository, AccountService accountService, DepositTypeRepository depositTypeRepository, InterestPaymentTypeRepository interestPaymentTypeRepository) {
         this.depositRepository = depositRepository;
         this.customerRepository = customerRepository;
         this.depositTypeRepository = depositTypeRepository;
         this.interestPaymentTypeRepository = interestPaymentTypeRepository;
-        this.accountRepository = accountRepository1;
+        this.accountRepository = accountRepository;
     }
 
-    public int getCustomerIdByUserDetail(UserDetails userDetails){
+    public int getCustomerIdByUserDetail(UserDetails userDetails) {
 
         if (userDetails == null) {
             throw new RuntimeException("User not authenticated");
@@ -133,7 +133,7 @@ public class DepositService {
         deposit.setActive(false);
         AccountEntity account = deposit.getBankAccount();
         account.setBalance(account.getBalance().add(deposit.getAmount()));
-        if (deposit.getPiggyBank().compareTo(BigDecimal.ZERO)!=0){
+        if (deposit.getPiggyBank().compareTo(BigDecimal.ZERO) != 0) {
             account.setBalance(account.getBalance().add(deposit.getPiggyBank()));
         }
         depositRepository.save(deposit);

@@ -23,16 +23,16 @@ public class CustomerService {
         this.bCryptPasswordEncoder = bCryptPasswordEncoder1;
     }
 
-    public CustomerEntity getCustomerById(int id){
+    public CustomerEntity getCustomerById(int id) {
         return customerRepository.findById(id).orElse(null);
     }
 
-    public CustomerEntity getCustomerByName(String name){
+    public CustomerEntity getCustomerByName(String name) {
         return customerRepository.findByName(name).orElse(null);
     }
 
     @Transactional
-    public void register(CustomerEntity customer){
+    public void register(CustomerEntity customer) {
         AccountEntity account = accountService.createNewAccount();
         customer.setBankAccount(account);
 

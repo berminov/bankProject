@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <meta charset="UTF-8">
-  <title>Информация о пользователе</title>
+    <meta charset="UTF-8">
+    <title>Информация о пользователе</title>
 </head>
 <body>
 <h1>Добро пожаловать, <span th:text="${customer.getName}">Имя пользователя</span>!</h1>
 
 <div>
-  <h2>Ваши действия:</h2>
-  <ul>
-    <li><a th:href="@{/customer/account/{accountId}(accountId=${customer.getBankAccount.getId})}" th:text="'Счёт ' + ${customer.getName}">Счета</a></li>
-    <li><a th:href="@{/customer/deposits}" th:text="'Вклады ' + ${customer.getName}">Вклады</a></li>
-  </ul>
+    <h2>Ваши действия:</h2>
+    <ul>
+        <li><a th:href="@{/customer/account/{accountId}(accountId=${customer.getBankAccount.getId})}"
+               th:text="'Счёт ' + ${customer.getName}">Счета</a></li>
+        <li><a th:href="@{/customer/deposits}" th:text="'Вклады ' + ${customer.getName}">Вклады</a></li>
+    </ul>
 </div>
 <br>
 <form th:action="@{/logout}" method="get">
-  <button type="submit">Выйти из аккаунта</button>
+    <button type="submit">Выйти из аккаунта</button>
 </form>
 </body>
 </html>
