@@ -21,8 +21,6 @@ public class AccountEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    private BigDecimal numBankAccount;
-
     private BigDecimal balance;
 
     @OneToOne(mappedBy = "bankAccount")

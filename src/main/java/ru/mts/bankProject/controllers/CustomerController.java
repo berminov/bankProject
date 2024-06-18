@@ -25,16 +25,11 @@ public class CustomerController {
             throw new RuntimeException("User not authenticated");
         }
 
-        // Получаем имя пользователя (или другой идентификатор)
         String username = userDetails.getUsername();
-
-        // Ищем пользователя по имени пользователя
         CustomerEntity customer = customerService.getCustomerByName(username);
-
-        // Передаем информацию о пользователе в модель
         model.addAttribute("customer", customer);
 
-        // Возвращаем имя представления (view)
         return "customer";
     }
+
 }

@@ -37,4 +37,11 @@ public class AccountService {
         account.setBalance(account.getBalance().subtract(amount));
         accountRepository.save(account); // Сохранение изменений в базе данных
     }
+    @Transactional
+    public AccountEntity createNewAccount(){
+        AccountEntity account = new AccountEntity();
+        account.setBalance(BigDecimal.ZERO);
+        accountRepository.save(account);
+        return account;
+    }
 }

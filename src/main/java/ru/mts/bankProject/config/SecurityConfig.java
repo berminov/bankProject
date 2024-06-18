@@ -24,20 +24,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/auth/login", "/error").permitAll()
+                .antMatchers("/auth/login", "/error","/auth/registration").permitAll()
                 .anyRequest().authenticated()
                 .and()
                 .formLogin().loginPage("/auth/login") // Указываем полный путь к странице логина
                 .loginProcessingUrl("/process_login") // URL для обработки логина
                 .defaultSuccessUrl("/customer", true) // Успешный вход: перенаправление на /customer
                 .failureUrl("/auth/login?error");// Ошибка входа: перенаправление на /auth/login с параметром ?error
-//                .permitAll() // Разрешаем всем доступ к странице логина
-//                .and()
-//                .logout()
-//                .logoutUrl("/logout") // URL для выхода
-//                .logoutSuccessUrl("/auth/login") // После выхода перенаправление на /auth/login
-//                .invalidateHttpSession(true)
-//                .deleteCookies("JSESSIONID");
     }
 
     @Override

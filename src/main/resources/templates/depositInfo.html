@@ -28,14 +28,14 @@
 <br>
 
 <!-- Форма для пополнения вклада -->
-<form id="depositForm" th:if="${deposit.active && (deposit.depositType.id == 1 || deposit.depositType.id == 2)}" th:action="@{/customers/{customerId}/deposits/{depositId}/deposit(customerId=${deposit.customer.id}, depositId=${deposit.id})}" method="post" style="display: none;">
+<form id="depositForm" th:if="${deposit.active && (deposit.depositType.id == 1 || deposit.depositType.id == 2)}" th:action="@{/customer/deposits/{depositId}/deposit(depositId=${deposit.id})}" method="post" style="display: none;">
     <label for="depositAmount">Сумма для пополнения:</label>
     <input type="number" id="depositAmount" name="amount" step="0.01" min="0">
     <button type="submit">Пополнить вклад</button>
 </form>
 
 <!-- Форма для снятия средств -->
-<form id="withdrawForm" th:if="${deposit.active && deposit.depositType.id == 1}" th:action="@{/customers/{customerId}/deposits/{depositId}/withdraw(customerId=${deposit.customer.id}, depositId=${deposit.id})}" method="post" style="display: none;">
+<form id="withdrawForm" th:if="${deposit.active && deposit.depositType.id == 1}" th:action="@{/customer/deposits/{depositId}/withdraw(depositId=${deposit.id})}" method="post" style="display: none;">
     <label for="withdrawAmount">Сумма для снятия:</label>
     <input type="number" id="withdrawAmount" name="amount" step="0.01" min="0">
     <button type="submit">Снять средства</button>
@@ -44,7 +44,7 @@
 <br>
 
 <!-- Кнопка для закрытия вклада -->
-<form th:if="${deposit.active}" th:action="@{/customers/{customerId}/deposits/{depositId}/close(customerId=${deposit.customer.id}, depositId=${deposit.id})}" method="post">
+<form th:if="${deposit.active}" th:action="@{/customer/deposits/{depositId}/close(depositId=${deposit.id})}" method="post">
     <button type="submit">Закрыть вклад</button>
 </form>
 

@@ -10,7 +10,7 @@
 <div>
   <h2>Ваши действия:</h2>
   <ul>
-    <li><a th:href="@{/customer/account/{accountId}(accountId=${customer.getBankAccount.getId})}" th:text="'Счета ' + ${customer.getName}">Счета</a></li>
+    <li><a th:href="@{/customer/account/{accountId}(accountId=${customer.getBankAccount.getId})}" th:text="'Счёт ' + ${customer.getName}">Счета</a></li>
     <li><a th:href="@{/customer/deposits}" th:text="'Вклады ' + ${customer.getName}">Вклады</a></li>
   </ul>
 </div>
