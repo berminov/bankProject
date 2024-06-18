@@ -6,12 +6,72 @@
 </head>
 <body>
 <h1>Информация о вкладе</h1>
-    <p>Номер вклада: <span th:text="${deposit.id}">Номер вклада</span></p>
-    <p>Сумма: <span th:text="${deposit.amount} + ' ₽'">Сумма</span></p>
+<p>Номер вклада: <span th:text="${deposit.id}">Номер вклада</span></p>
+<p>Сумма: <span th:text="${deposit.amount} + ' ₽'">Сумма</span></p>
 <p>Процентная ставка: <span th:text="${deposit.depositRate} + ' %'">Процентная ставка</span></p>
 <p>Тип вклада: <span th:text="${deposit.depositType.depositTypeName}">Тип вклада</span></p>
 <p>Тип выплаты процентов: <span th:text="${deposit.interestPaymentType.interestPaymentTypeName}">Тип выплаты процентов</span></p>
 <p>Дата начала: <span th:text="${deposit.startDate}">Дата начала</span></p>
 <p>Дата окончания: <span th:text="${deposit.endDate}">Дата окончания</span></p>
+
+<!-- Отображение ошибки, если она есть -->
+<div th:if="${errorMessage}" style="color: red;">
+    <p th:text="${errorMessage}"></p>
+</div>
+
+<!-- Кнопка для открытия формы пополнения вклада -->
+<button th:if="${deposit.active && (deposit.depositType.id == 1 || deposit.depositType.id == 2)}" onclick="toggleDepositForm()">Пополнить вклад</button>
+
+<!-- Кнопка для открытия формы снятия средств -->
+<button th:if="${deposit.active && deposit.depositType.id == 1}" onclick="toggleWithdrawForm()">Снять средства</button>
+
+<br>
+
+<!-- Форма для пополнения вклада -->
+<form id="depositForm" th:if="${deposit.active && (deposit.depositType.id == 1 || deposit.depositType.id == 2)}" th:action="@{/customers/{customerId}/deposits/{depositId}/deposit(customerId=${deposit.customer.id}, depositId=${deposit.id})}" method="post" style="display: none;">
+    <label for="depositAmount">Сумма для пополнения:</label>
+    <input type="number" id="depositAmount" name="amount" step="0.01" min="0">
+    <button type="submit">Пополнить вклад</button>
+</form>
+
+<!-- Форма для снятия средств -->
+<form id="withdrawForm" th:if="${deposit.active && deposit.depositType.id == 1}" th:action="@{/customers/{customerId}/deposits/{depositId}/withdraw(customerId=${deposit.customer.id}, depositId=${deposit.id})}" method="post" style="display: none;">
+    <label for="withdrawAmount">Сумма для снятия:</label>
+    <input type="number" id="withdrawAmount" name="amount" step="0.01" min="0">
+    <button type="submit">Снять средства</button>
+</form>
+
+<br>
+
+<!-- Кнопка для закрытия вклада -->
+<form th:if="${deposit.active}" th:action="@{/customers/{customerId}/deposits/{depositId}/close(customerId=${deposit.customer.id}, depositId=${deposit.id})}" method="post">
+    <button type="submit">Закрыть вклад</button>
+</form>
+
+<br>
+
+<!-- Форма для возврата к списку вкладов -->
+<form th:action="@{/customers/{customerId}/deposits(customerId=${deposit.customer.id})}" method="get">
+    <button type="submit">Назад</button>
+</form>
+
+<script>
+    function toggleDepositForm() {
+        var depositForm = document.getElementById('depositForm');
+        var withdrawForm = document.getElementById('withdrawForm');
+
+        depositForm.style.display = depositForm.style.display === 'none' ? 'block' : 'none';
+        withdrawForm.style.display = 'none';
+    }
+
+    function toggleWithdrawForm() {
+        var depositForm = document.getElementById('depositForm');
+        var withdrawForm = document.getElementById('withdrawForm');
+
+        withdrawForm.style.display = withdrawForm.style.display === 'none' ? 'block' : 'none';
+        depositForm.style.display = 'none';
+    }
+</script>
+
 </body>
 </html>

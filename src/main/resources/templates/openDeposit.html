@@ -55,13 +55,8 @@
 </form>
 
 <br>
-<!-- Кнопка "Назад" -->
-<button onclick="goBack()">Назад</button>
-
-<script>
-    function goBack() {
-        window.history.back();
-    }
-</script>
+<form th:action="@{/customers/{customerId}/deposits(customerId=${customerId})}" method="get">
+    <button type="submit">Назад</button>
+</form>
 </body>
 </html>

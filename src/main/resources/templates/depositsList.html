@@ -7,34 +7,38 @@
 <body>
 <h1>Вклады</h1>
 
-<div th:if="${deposits.size() == 0}">
-    <p>У вас нет вкладов.</p>
-    <a th:href="@{/customers/{customerId}/deposits/open(customerId=${customerId})}">Открыть вклад</a>
-</div>
-
-<div th:if="${deposits.size() > 0}">
+<div th:if="${activeDeposits.size() > 0}">
+    <h2>Активные вклады</h2>
     <ul>
-        <li th:each="deposit : ${deposits}">
-            <a th:href="@{deposits/{id}(id = ${deposit.getId})}" th:text="${deposit.getId}">Номер вклада</a> - Сумма:
-            <span th:text="${deposit.getAmount}">Сумма</span>
+        <li th:each="deposit : ${activeDeposits}">
+            <a th:href="@{deposits/{id}(id=${deposit.getId})}" th:text="${deposit.getId}">Номер вклада</a> - Сумма:
+            <span th:text="${deposit.getAmount} + ' ₽'">Сумма</span>
         </li>
     </ul>
 </div>
 
-<div>
-    <a th:href="@{/customers/{customerId}/deposits/open(customerId=${customerId})}">Открыть вклад</a>
+<div th:if="${closedDeposits.size() > 0}">
+    <h2>Закрытые вклады</h2>
+    <ul>
+        <li th:each="deposit : ${closedDeposits}">
+            <a th:href="@{deposits/{id}(id=${deposit.getId})}" th:text="${deposit.getId}">Номер вклада</a> - Сумма:
+            <span th:text="${deposit.getAmount} + ' ₽'">Сумма</span>
+        </li>
+    </ul>
 </div>
 
+<div th:if="${activeDeposits.size() == 0}">
+    <p>У вас нет активных вкладов.</p>
+</div>
+
+
+<form th:action="@{/customers/{customerId}/deposits/open(customerId=${customerId})}" method="get">
+    <button type="submit">Открыть вклад</button>
+</form>
 <br>
 <!-- Кнопка "Назад" -->
-<button onclick="goBack()">Назад</button>
-
-<script>
-        function goBack() {
-            window.history.back();
-        }
-
-
-</script>
+<form th:action="@{/customer/{customerId}(customerId=${customerId})}" method="get">
+    <button type="submit">Назад</button>
+</form>
 </body>
 </html>

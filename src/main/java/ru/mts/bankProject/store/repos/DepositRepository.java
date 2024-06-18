@@ -9,4 +9,6 @@ import java.util.List;
 public interface DepositRepository extends JpaRepository<DepositEntity, Integer> {
     List<DepositEntity> findByCustomerId(int id);
     List<DepositEntity> findByNextPaymentDate(LocalDate date);
+    List<DepositEntity> findByCustomerIdAndActiveTrue(int customerId);
+    List<DepositEntity> findByCustomerIdAndActiveFalse(int customerId);
 }

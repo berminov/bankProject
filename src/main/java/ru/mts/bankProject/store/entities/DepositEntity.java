@@ -35,6 +35,9 @@ public class DepositEntity {
 
     private Boolean active;
 
+    @Transient
+    private int period;
+
     @ManyToOne
     @JoinColumn(name = "deposit_type_id", referencedColumnName = "id")
     private DepositTypeEntity depositType;

@@ -24,15 +24,26 @@ public class DepositService {
 
     private final InterestPaymentTypeRepository interestPaymentTypeRepository;
 
-    public DepositService(DepositRepository depositRepository, AccountRepository accountRepository, CustomerRepository customerRepository, AccountService accountService, DepositTypeRepository depositTypeRepository, InterestPaymentTypeRepository interestPaymentTypeRepository) {
+    private final AccountRepository accountRepository;
+
+    public DepositService(DepositRepository depositRepository, AccountRepository accountRepository, CustomerRepository customerRepository, AccountService accountService, DepositTypeRepository depositTypeRepository, InterestPaymentTypeRepository interestPaymentTypeRepository, AccountRepository accountRepository1) {
         this.depositRepository = depositRepository;
         this.customerRepository = customerRepository;
         this.depositTypeRepository = depositTypeRepository;
         this.interestPaymentTypeRepository = interestPaymentTypeRepository;
+        this.accountRepository = accountRepository1;
     }
 
     public DepositEntity getDepositById(int id) {
         return depositRepository.findById(id).orElse(null);
+    }
+
+    public List<DepositEntity> getOpenDepositsByCustomerId(int customerId) {
+        return depositRepository.findByCustomerIdAndActiveTrue(customerId);
+    }
+
+    public List<DepositEntity> getClosedDepositsByCustomerId(int customerId) {
+        return depositRepository.findByCustomerIdAndActiveFalse(customerId);
     }
 
     public List<DepositEntity> getCustomerDeposits(int id) {
@@ -42,6 +53,38 @@ public class DepositService {
     public boolean checkBalance(int customerId, BigDecimal amount) {
         AccountEntity account = customerRepository.findById(customerId).get().getBankAccount();
         return account.getBalance().compareTo(amount) >= 0;
+    }
+
+    @Transactional
+    public void depositToDeposit(int depositId, BigDecimal amount) {
+        DepositEntity deposit = getDepositById(depositId);
+        AccountEntity account = deposit.getBankAccount();
+        if (account.getBalance().compareTo(amount) < 0) {
+            throw new RuntimeException("Недостаточно средств!");
+        }
+        account.setBalance(account.getBalance().subtract(amount));
+        deposit.setAmount(deposit.getAmount().add(amount));
+        BigDecimal newDepositRate = calculateDepositRate(deposit.getAmount(), deposit.getDepositType().getId(),
+                deposit.getPeriod(), deposit.getInterestPaymentType().getId());
+        deposit.setDepositRate(newDepositRate);
+        accountRepository.save(account);
+        depositRepository.save(deposit);
+    }
+
+    @Transactional
+    public void withdrawDeposit(int depositId, BigDecimal amount) {
+        DepositEntity deposit = getDepositById(depositId);
+        AccountEntity account = deposit.getBankAccount();
+        if (deposit.getAmount().compareTo(amount) < 0) {
+            throw new RuntimeException("Недостаточно средств!");
+        }
+        deposit.setAmount(deposit.getAmount().subtract(amount));
+        account.setBalance(account.getBalance().add(amount));
+        BigDecimal newDepositRate = calculateDepositRate(deposit.getAmount(), deposit.getDepositType().getId(),
+                deposit.getPeriod(), deposit.getInterestPaymentType().getId());
+        deposit.setDepositRate(newDepositRate);
+        accountRepository.save(account);
+        depositRepository.save(deposit);
     }
 
     @Transactional
@@ -59,7 +102,8 @@ public class DepositService {
                 .orElseThrow(() -> new NoSuchElementException("Deposit type with id " + depositTypeId + " not found")));
         deposit.setInterestPaymentType(interestPaymentTypeRepository.findById(interestPaymentTypeId)
                 .orElseThrow(() -> new NoSuchElementException("Interest payment type with id " + interestPaymentTypeId + " not found")));
-
+        deposit.setActive(true);
+        deposit.setPeriod(period);
         deposit.setNextPaymentDate(LocalDate.now().plusMonths(1));
         deposit.setPiggyBank(BigDecimal.valueOf(0));
         deposit.setDepositRate(calculateDepositRate(amount, depositTypeId, period, interestPaymentTypeId));
@@ -68,7 +112,18 @@ public class DepositService {
         depositRepository.save(deposit);
     }
 
+    @Transactional
+    public void closeDeposit(int id) {
+        DepositEntity deposit = getDepositById(id);
+        deposit.setActive(false);
+        AccountEntity account = deposit.getBankAccount();
+        account.setBalance(account.getBalance().add(deposit.getAmount()));
+        depositRepository.save(deposit);
+        accountRepository.save(account);
+    }
+
     @Scheduled(cron = "0 0 0 * * *") // Каждый день в полночь
+    @Transactional
     public void calculateInterest() {
         LocalDate currentDate = LocalDate.now();
 
@@ -86,9 +141,11 @@ public class DepositService {
                 case 3:
                     deposit.setAmount(deposit.getAmount().add(getMonthPayment(deposit)));
                     break;
-                //TODO
+                    //TODO Сделать чтобы вклад закрывался при окончании срока
             }
+            depositRepository.save(deposit);
         }
+
     }
 
     private BigDecimal getMonthRate(DepositEntity deposit) {
